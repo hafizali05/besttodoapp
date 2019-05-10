@@ -1,5 +1,5 @@
-var AWS = require('aws-sdk');
-const uuidv4 = require('uuid/v4');
+import * as uuidv4 from 'uuid/v4';
+import { DynamoDB } from 'aws-sdk';
 var awsconfig = {
     "accessKeyId": process.env.accessKeyId,
     "secretAccessKey": process.env.secretAccessKey,
@@ -7,7 +7,8 @@ var awsconfig = {
     "endpoint": "http://dynamodb.eu-west-1.amazonaws.com"
 }
 AWS.config.update(awsconfig);
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const dynamodb = new DynamoDB.DocumentClient();
+
 let putdata = async function(){
     var params = {
         TableName:'besttododb',
