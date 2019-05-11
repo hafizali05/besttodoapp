@@ -1,20 +1,32 @@
-import * as express from "express";
-// Our Express APP config
-const app = express();
-app.set("port", process.env.PORT || 3000);
+import * as express from 'express';
+import * as bodyParser from 'body-parser'; //use to parse the form data that you pass in the request
+import { Todos } from "./routes/todo";
 
-// API Endpoints
+class App {
 
-app.get("/", (req, res) => {
-  res.send("hello");
-});
-// app.get("/{id}", book.getBook);
-// app.post("/", book.addBook);
-// app.put("/{id}", book.updateBook);
-// app.delete("/{id}", book.deleteBook);
+    public app: express.Application;
 
-const server = app.listen(app.get("port"), () => {
-  console.log("App is running on http://localhost:%d", app.get("port"));
-});
+    public todoRoutes: Todos = new Todos();
 
-module.exports = server;
+    constructor() {
+        this.app = express(); //TK
+        this.config();
+        this.todoRoutes.routes(this.app);
+    }
+    private loggerMiddleware(request: express.Request, response: express.Response, next) {
+      console.log(`${request.method} ${request.path}`);
+      next();
+    }
+    private config(): void {
+        this.app.use(this.loggerMiddleware)
+        // support application/json type post data
+        this.app.use(bodyParser.json());
+        //support application/x-www-form-urlencoded post data
+        this.app.use(bodyParser.urlencoded({
+            extended: false
+        }));
+    }
+
+}
+
+export default new App().app;
