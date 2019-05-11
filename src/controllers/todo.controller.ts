@@ -36,3 +36,21 @@ export let addTodo = async (req: Request, res: Response, next: NextFunction) => 
         console.log(error);
     }
 }
+
+export let updateTodo = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {id,title, description} = req.body;
+        const params = {
+            TableName:'besttododb',
+            Item:{
+                id,
+                title,
+                description
+            }
+        }
+        const data = await dynamodb.put(params).promise();
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+    }
+}
