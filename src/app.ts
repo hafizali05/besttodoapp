@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser'; //use to parse the form data that you pass in the request
-import { Todos } from "./routes/todo";
+import { Todos } from "./routes/todo.router";
 
 class App {
 
