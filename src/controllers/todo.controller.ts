@@ -54,3 +54,19 @@ export let updateTodo = async (req: Request, res: Response, next: NextFunction) 
         console.log(error);
     }
 }
+
+export let deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {id} = req.body;
+        const params = {
+            TableName:'besttododb',
+            Key:{
+                id
+            }
+        };
+        const data = await dynamodb.delete(params).promise();
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+    }
+}

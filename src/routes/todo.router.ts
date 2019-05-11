@@ -7,6 +7,8 @@ export class Todos {
         // .get((req: Request, res: Response) => {            
         //     res.status(200).send(tododb);
         // })
+        app.route('/deletetodo')
+            .delete(todoController.deleteTodo)        
         app.route('/updatetodo')
             .put(todoController.updateTodo)        
         app.route('/addtodo')
