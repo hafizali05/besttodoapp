@@ -1,72 +1,48 @@
 import { Request, Response, NextFunction } from "express";
-import * as uuidv4 from 'uuid/v4';
-import * as AWS from 'aws-sdk';
-var awsconfig = {
-    "accessKeyId": process.env.accessKeyId,
-    "secretAccessKey": process.env.secretAccessKey,
-    "region":"eu-west-1",
-    "endpoint": "http://dynamodb.eu-west-1.amazonaws.com"
-}
-AWS.config.update(awsconfig);
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+import Todo from "../tododb";
 
 export let getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await dynamodb.scan({TableName:'besttododb'}).promise();
-        res.send(data);
-    } catch (error) {
-        console.log(error)
-    }   
-}
-
-export let addTodo = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const {title, description} = req.body;
-        const params = {
-            TableName:'besttododb',
-            Item:{
-                id: uuidv4(),
-                title,
-                description
-            }
-        }
-        const data = await dynamodb.put(params).promise();
+        // const data = await dynamodb.scan({TableName:'besttododb'}).promise();
+        const data = await Todo.find();
         res.send(data);
     } catch (error) {
         console.log(error);
+        res.send(error);
+    }   
+}
+
+
+export let addTodo = async (req: Request, res: Response, next: NextFunction) => {
+    let {title,description} = req.body;
+    let todo = new Todo({title,description})
+    try {
+        const data = todo.save();
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send(error);
     }
 }
 
 export let updateTodo = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {id,title, description} = req.body;
-        const params = {
-            TableName:'besttododb',
-            Item:{
-                id,
-                title,
-                description
-            }
-        }
-        const data = await dynamodb.put(params).promise();
+        const data = await Todo.findByIdAndUpdate(id, {title, description});
         res.send(data);
     } catch (error) {
         console.log(error);
+        res.send(error);
     }
 }
 
 export let deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {id} = req.body;
-        const params = {
-            TableName:'besttododb',
-            Key:{
-                id
-            }
-        };
-        const data = await dynamodb.delete(params).promise();
+        const data = await Todo.deleteOne({id})
         res.send(data);
     } catch (error) {
         console.log(error);
+        res.send(error);
     }
 }
