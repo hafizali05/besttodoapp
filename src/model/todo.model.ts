@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-
+import ITodo from './../interfaces/todo.interface';
 const uri: string = "mongodb://127.0.0.1:27017/local";
 
 mongoose.connect(uri,{ useNewUrlParser: true }, (err: any) => {
@@ -9,11 +9,6 @@ mongoose.connect(uri,{ useNewUrlParser: true }, (err: any) => {
     console.log("Succesfully Connected!");
   }
 });
-
-export interface ITodo extends mongoose.Document {
-  title: string;
-  description: number;
-}
 
 export const TodoSchema = new mongoose.Schema({
   title: { type: String, required: true },
