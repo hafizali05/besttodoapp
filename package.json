@@ -7,7 +7,8 @@
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\""
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\"",
+    "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\""
   },
   "dependencies": {
     "@types/chai": "^4.1.7",
@@ -19,6 +20,7 @@
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "class-transformer": "^0.2.2",
     "class-validator": "^0.9.1",
     "concurrently": "^3.5.1",
     "express": "^4.16.3",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
-    "@types/uuid": "^3.4.4"
+    "@types/uuid": "^3.4.4",
+    "reflect-metadata": "^0.1.13"
   }
 }
