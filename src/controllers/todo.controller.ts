@@ -1,5 +1,8 @@
+import * as express from 'express';
 import { Request, Response, NextFunction } from "express";
 import Todo from "../tododb";
+import TodoNotFoundException from "../exceptions/TodoNotFoundException";
+
 
 export let getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -29,7 +32,11 @@ export let updateTodo = async (req: Request, res: Response, next: NextFunction) 
     try {
         const {id,title, description} = req.body;
         const data = await Todo.findByIdAndUpdate(id, {title, description});
-        res.send(data);
+        if(data){
+            res.send(data);
+        } else {
+            next(new TodoNotFoundException(id));
+        }
     } catch (error) {
         console.log(error);
         res.send(error);
