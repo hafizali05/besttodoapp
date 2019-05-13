@@ -13,11 +13,9 @@ export default class TodoController implements Controller {
     public path = '/todo';
     private todo = todoModel;
     public getAllTodos = async (req: Request, res: Response, next: NextFunction) => {
-        console.log('geting all data')
+        console.log('get all data')
         try {
-            // const data = await dynamodb.scan({TableName:'besttododb'}).promise();
             const data = await this.todo.find()
-            // console.log(data)
             if (data) {
                 res.status(200).send(data);
             } else {
@@ -31,9 +29,9 @@ export default class TodoController implements Controller {
 
 
     public getTodoByid = async (req: Request, res: Response, next: NextFunction) => {
-        console.log('req.body:',req.body);
+        console.log('get todo by id',req.body);
         try {
-            const { id } = req.body;
+            const { id } = req.params;
             const data = await this.todo.findById(id);
             if (data) {
                 res.status(200).send(data);
@@ -49,9 +47,11 @@ export default class TodoController implements Controller {
 
 
     public modifyTodo = async (req: Request, res: Response, next: NextFunction) => {
+        const { title, description } = req.body;
+        const { id } = req.params;
+        console.log({id,title,description})
         try {
-            const { id, title, description } = req.body;
-            const data = await this.todo.findByIdAndUpdate(id, { title, description });
+            const data = await this.todo.updateOne({"_id":id},{$set:{title,description}},{upsert: true});
             if (data) {
                 res.send(data);
             } else {
@@ -65,6 +65,7 @@ export default class TodoController implements Controller {
 
 
     public createTodo = async (req: Request, res: Response, next: NextFunction) => {
+        console.log('create to do')
         const todoData: CreateTodoDto = req.body;
         const createdTodo = new this.todo({
             ...todoData
@@ -76,6 +77,7 @@ export default class TodoController implements Controller {
     }
 
     public deleteTodo = async (req: Request, res: Response, next: NextFunction) => {
+        console.log('delete todo')
         const id = req.params.id;
         const successResponse = await this.todo.findByIdAndDelete(id);
         if (successResponse) {
