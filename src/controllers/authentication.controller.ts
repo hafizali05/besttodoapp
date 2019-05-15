@@ -28,7 +28,7 @@ class AuthenticationController implements Controller {
       response.setHeader('Set-Cookie', [cookie]);
       // user.token = userToken;
       console.log('user from registration', '====================================', userToken);
-      response.send({userToken,user});
+      response.send({ userToken, user });
     } catch (error) {
       next(error);
     }
@@ -42,8 +42,9 @@ class AuthenticationController implements Controller {
       if (isPasswordMatching) {
         user.password = undefined;
         const tokenData = this.createToken(user);
+        // console.log('tokenData:',tokenData);
         response.setHeader('Set-Cookie', [this.createCookie(tokenData)]);
-        response.send({userToken:tokenData.token,user});
+        response.send({tokenData,user});
       } else {
         next(new WrongCredentialsException());
       }
