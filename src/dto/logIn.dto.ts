@@ -7,8 +7,8 @@ class LogInDto {
   @IsString()
   public password: string;
 
-  @IsString()
-  public token: string;
+  // @IsString()
+  // public token: any;
 }
 
 export default LogInDto;
